@@ -116,6 +116,28 @@ namespace Api.Controllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("api/news/date/{date}")]
+        public HttpResponseMessage Get(DateTime date)
+        {
+            var db = new ApiContext();
+
+            try
+            {
+                var data = (from u in db.News
+                            where u.PublishDate.Equals(date)
+                            select u.Title).ToList();
+                return Request.CreateResponse(HttpStatusCode.OK, data);
+
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, ex.Message);
+
+                throw;
+            }
+        }
     }
 
 
